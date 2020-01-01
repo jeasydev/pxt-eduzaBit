@@ -1,0 +1,24 @@
+{
+    "name": "pxt-eduzaBit",
+    "version": "1.0.005",
+    "description": "",
+    "dependencies": {
+        "core": "*",
+        "radio": "*"
+    },
+    "files": [
+        "README.md",
+        "main.ts",
+        "pxtparts.json",
+        "LCD1602_I2C.ts",
+        "iKB-1.ts",
+        "microbit-EduzaBit_v1u005.ts",
+        "parts/LCD1602_I2C.svg"
+    ],
+    "testFiles": [
+        "test_ikb.ts",
+        "test_lcd.ts"
+    ],
+    "public": true,
+    "installedVersion": "workspace:f7821051-6faf-4cf3-36f4-af1dea0d2a4d"
+}
