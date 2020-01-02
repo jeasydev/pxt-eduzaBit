@@ -81,7 +81,7 @@ namespace stdio {
     * @param dp ระบุ digitalPort ที่ต้องการอ่านค่าจากเซนเซอร์; ตัวอย่างเช่น: dp.D0
     */
     //% help=stdio/digital-read
-    //% block="digitalRead(%dp)"
+    //% block="analogRead(%ap)"
     export function digitalRead(p: dp, isPullUp = false): number {
         if (isPullUp) {
             pins.i2cWriteNumber(72, ((8 + p) * 256) + 3, NumberFormat.UInt16BE, false)
@@ -248,8 +248,9 @@ namespace EduzaBit {
         //% help=EduzaBit/LineTrackingCar/track-line
         //% block="%EduzaBit(ltCar).trackLine(%threshold, %analogInput1, %analogInput2)"
         //% weight=90
+        //% threshold.min=0 threshold.max=1023 threshold.defl=512
         //*% inlineInputMode=inline
-        public trackLine(threshold: number, analogInput1: number, analogInput2: number, crosslineCallback: (crosslineCount: number) => void): void {
+        public trackLine(threshold: number, analogInput1: ap, analogInput2: ap, crosslineCallback: (crosslineCount: number) => void): void {
             this.threshold = threshold;
             let motorFwSpeed: number = 46;   // motorFwSpeed;
             let motorRvSpeed: number = 38;  //motorRvSpeed;
@@ -331,6 +332,10 @@ namespace EduzaBit {
         //% help=EduzaBit/LineTrackingCar/run
         //% weight=80
         //% block="%EduzaBit(ltCar).run(%m1cm, %m2cm, %motor1Speed, %motor2Speed)"
+        //% m1cm.min=-100 m1cm.max=100 m1cm.defl=25
+        //% m2cm.min=-100 m2cm.max=100 m2cm.defl=25
+        //% motor1Speed.min=0 motor1Speed.max=100 motor1Speed.defl=30
+        //% motor2Speed.min=0 motor2Speed.max=100 motor2Speed.defl=30
         public run(m1cm: number, m2cm: number, motor1Speed: number, motor2Speed: number, runCallback: () => void): void {
             resetEnc8();
             resetEnc12();
@@ -379,6 +384,8 @@ namespace EduzaBit {
          */
         //% block="%EduzaBit(ltCar).backward(%cm, %motorSpeed)"
         //% weight=50
+        //% cm.defl=25
+        //% motorSpeed.min=0  motorSpeed.max=100  motorSpeed.defl=30
         public backward(cm: number, motorSpeed: number): void {
             this.run(cm, cm, -1 * motorSpeed, -1 * motorSpeed, function () { });
         }
