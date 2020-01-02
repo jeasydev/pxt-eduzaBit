@@ -1,3 +1,50 @@
+/** 
+* Enumeration of AnalogPin.
+*/
+enum ap {
+    //% block="A0"
+    A0 = 0x80,
+    //% block="A1"
+    A1 = 0x90,
+    //% block="A2"
+    A2 = 0xA0,
+    //% block="A3"
+    A3 = 0xB0,
+    //% block="A4"
+    A4 = 0xC0,
+    //% block="A5"
+    A5 = 0xD0,
+    //% block="A6"
+    A6 = 0xE0,
+    //% block="A7"
+    A7 = 0xF0
+
+}
+
+/** 
+* Enumeration of DigitalPin.
+*/
+enum dp {
+    //% block="D0"
+    D0,
+    //% block="D1"
+    D1,
+    //% block="D2"
+    D2,
+    //% block="D3"
+    D3,
+    //% block="D4"
+    D4,
+    //% block="D5"
+    D5,
+    //% block="D6"
+    D6,
+    //% block="D7"
+    D7
+}
+
+
+
 /**
  * Provides access to basic micro:bit functionality. ใส่สีใช้ // กับ % ด้วยสีแบบ hue \uf1ee
  * 
@@ -5,54 +52,44 @@
  */
 //% block="stdio" color=80 weight=199 icon="\u26D3"
 namespace stdio {
-    export let A0: number = iKB1ADC.ADC0;
-    export let A1: number = iKB1ADC.ADC1;
-    export let A2: number = iKB1ADC.ADC2;
-    export let A3: number = iKB1ADC.ADC3;
-    export let A4: number = iKB1ADC.ADC4;
-    export let A5: number = iKB1ADC.ADC5;
-    export let A6: number = iKB1ADC.ADC6;
-    export let A7: number = iKB1ADC.ADC7;
-
-    export let D0: number = pinx.D0;
-    export let D1: number = pinx.D1;
-    export let D2: number = pinx.D2;
-    export let D3: number = pinx.D3;
-    export let D4: number = pinx.D4;
-    export let D5: number = pinx.D5;
-    export let D6: number = pinx.D6;
-    export let D7: number = pinx.D7;
 
 
     /**
     * อ่านค่าสัญญาณแอนะล็อกจากเซนเซอร์ตามพอร์ทที่ระบุ
-    * @param ap ระบุ analogPort ที่ต้องการอ่านค่าจากเซนเซอร์; ตัวอย่างเช่น: stdio.A0
+    * @param ap ระบุ analogPort ที่ต้องการอ่านค่าจากเซนเซอร์; ตัวอย่างเช่น: ap.A0
     */
     //% help=stdio/analog-read
     //% block="analogRead(%ap)"
-    export function analogRead(ap: number): number {
-        return iKB1.ADC(ap);
+    export function analogRead(ADC_CH: ap): number {
+        pins.i2cWriteNumber(72, ADC_CH, NumberFormat.UInt8LE, false)
+        return pins.i2cReadNumber(72, NumberFormat.UInt16BE, false)
     }
 
     /**
     * เขียนค่าสัญญาณดิจิทัลออกไปยังพอร์ทที่ระบุ
-    * @param dp ระบุ digitalPort ที่ต้องการเขียนค่าออกไปควบคุม; ตัวอย่างเช่น: stdio.D0
+    * @param dp ระบุ digitalPort ที่ต้องการเขียนค่าออกไปควบคุม; ตัวอย่างเช่น: dp.D0
     * @param v ระบุสัญญาณดิจิทัลที่ต้องการเขียนออกไปยังอุปกรณ์ ; ตัวอย่างเช่น: 1 หรือ 0
     */
     //% help=stdio/digital-write
     //% block="digitalWrite(%dp, %v)"
-    export function digitalWrite(dp: number, v: number): void {
-        iKB1.out(pinx.D0, v);
+    export function digitalWrite(p: dp, v: number): void {
+        pins.i2cWriteNumber(72, ((8 + p) * 256) + v, NumberFormat.UInt16BE, false)
     }
 
     /**
     * อ่านค่าสัญญาณดิจิทัลจากเซนเซอร์ตามพอร์ทที่ระบุ
-    * @param dp ระบุ digitalPort ที่ต้องการอ่านค่าจากเซนเซอร์; ตัวอย่างเช่น: stdio.D0
+    * @param dp ระบุ digitalPort ที่ต้องการอ่านค่าจากเซนเซอร์; ตัวอย่างเช่น: dp.D0
     */
     //% help=stdio/digital-read
-    //% block="analogRead(%ap)"
-    export function digitalRead(dp: number): number {
-        return iKB1.In(dp)
+    //% block="digitalRead(%dp)"
+    export function digitalRead(p: dp, isPullUp = false): number {
+        if (isPullUp) {
+            pins.i2cWriteNumber(72, ((8 + p) * 256) + 3, NumberFormat.UInt16BE, false)
+            return pins.i2cReadNumber(72, NumberFormat.UInt8BE, false)
+        } else {
+            pins.i2cWriteNumber(72, ((8 + p) * 256) + 3, NumberFormat.UInt16BE, false)
+            return pins.i2cReadNumber(72, NumberFormat.UInt8BE, false)
+        }
     }
 }
 
