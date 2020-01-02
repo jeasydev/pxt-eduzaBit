@@ -108,7 +108,7 @@ enum iKB1Spin {
 /**
  * Custom blocks
  */
-//% weight=1 color=#31a751 icon="\uf085"
+//% weight=198 color=#31a751 icon="\uf085"
 namespace iKB1 {
     /**
      * ฟังก์ชั่นสำหรับการติดต่อกับบอร์ด iKB

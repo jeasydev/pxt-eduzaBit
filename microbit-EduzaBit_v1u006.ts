@@ -3,8 +3,8 @@
  * 
  * เพิ่ม analog pin และ analogRead() สำหรับใช้ร่วมกับบอร์ด iKB1 จาก inex
  */
-//%
-namespace pins {
+//% block="stdio" color=80 weight=199 icon="\u26D3"
+namespace stdio {
     export let A0: number = iKB1ADC.ADC0;
     export let A1: number = iKB1ADC.ADC1;
     export let A2: number = iKB1ADC.ADC2;
@@ -14,15 +14,52 @@ namespace pins {
     export let A6: number = iKB1ADC.ADC6;
     export let A7: number = iKB1ADC.ADC7;
 
-    export function analogRead(p: number): number {
-        return iKB1.ADC(p);
+    export let D0: number = pinx.D0;
+    export let D1: number = pinx.D1;
+    export let D2: number = pinx.D2;
+    export let D3: number = pinx.D3;
+    export let D4: number = pinx.D4;
+    export let D5: number = pinx.D5;
+    export let D6: number = pinx.D6;
+    export let D7: number = pinx.D7;
+
+
+    /**
+    * อ่านค่าสัญญาณแอนะล็อกจากเซนเซอร์ตามพอร์ทที่ระบุ
+    * @param ap ระบุ analogPort ที่ต้องการอ่านค่าจากเซนเซอร์; ตัวอย่างเช่น: stdio.A0
+    */
+    //% help=stdio/analog-read
+    //% block="analogRead(%ap)"
+    export function analogRead(ap: number): number {
+        return iKB1.ADC(ap);
+    }
+
+    /**
+    * เขียนค่าสัญญาณดิจิทัลออกไปยังพอร์ทที่ระบุ
+    * @param dp ระบุ digitalPort ที่ต้องการเขียนค่าออกไปควบคุม; ตัวอย่างเช่น: stdio.D0
+    * @param v ระบุสัญญาณดิจิทัลที่ต้องการเขียนออกไปยังอุปกรณ์ ; ตัวอย่างเช่น: 1 หรือ 0
+    */
+    //% help=stdio/digital-write
+    //% block="digitalWrite(%dp, %v)"
+    export function digitalWrite(dp: number, v: number): void {
+        iKB1.out(pinx.D0, v);
+    }
+
+    /**
+    * อ่านค่าสัญญาณดิจิทัลจากเซนเซอร์ตามพอร์ทที่ระบุ
+    * @param dp ระบุ digitalPort ที่ต้องการอ่านค่าจากเซนเซอร์; ตัวอย่างเช่น: stdio.D0
+    */
+    //% help=stdio/digital-read
+    //% block="analogRead(%ap)"
+    export function digitalRead(dp: number): number {
+        return iKB1.In(dp)
     }
 }
 
 /**
  * EduzaBit Namespace
  */
-//%block="EduzaBit" color=16 weight=100 icon="\u26D0"
+//%block="EduzaBit" color=16 weight=200 icon="\u26D0"
 namespace EduzaBit {
 
     let enc2state2: number = 0;
@@ -179,8 +216,8 @@ namespace EduzaBit {
             this.threshold = threshold;
             let motorFwSpeed: number = 46;   // motorFwSpeed;
             let motorRvSpeed: number = 38;  //motorRvSpeed;
-            let a1 = pins.analogRead(analogInput1);  //A6
-            let a2 = pins.analogRead(analogInput2);  //A5
+            let a1 = stdio.analogRead(analogInput1);  //A6
+            let a2 = stdio.analogRead(analogInput2);  //A5
             if (a1 < this.threshold) {
                 if (a2 < this.threshold) {
                     this.crosslineCheck++;
@@ -376,7 +413,6 @@ namespace EduzaBit {
     * @param cmDiameterOfWheel ระบุเส้นผ่านศูนย์กลางของล้อในหน่วยเซนติเมตร; ตัวอย่างเช่น: 7
     * @param cmDirectionWheelToWheel ระบุระยะห่างระว่างล้อทั้งสองข้างในหน่วยเซนติเมตร; ตัวอย่างเช่น: 25
     */
-
     //% help=functions/new-line-tracking-car
     //% block="newLineTrackingCarInstance(%cmDiameterOfWheel, %cmDirectionWheelToWheel)"
     //% weight=100
