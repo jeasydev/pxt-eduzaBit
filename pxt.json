@@ -12,7 +12,7 @@
         "pxtparts.json",
         "LCD1602_I2C.ts",
         "iKB-1.ts",
-        "microbit-EduzaBit_v1u005.ts",
+        "microbit-EduzaBit_v1u006.ts",
         "parts/LCD1602_I2C.svg"
     ],
     "testFiles": [
